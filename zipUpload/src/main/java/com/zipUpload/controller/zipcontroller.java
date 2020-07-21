@@ -48,10 +48,15 @@ public class zipcontroller {
 				dir.mkdir();
 			}
 			
+			
+			// 코드 분석 다시 하기 
+			
 			Iterator<String> files = request.getFileNames();
 			file = request.getFile(files.next());
 			
 			List<MultipartFile> fileList = request.getFiles("zipFile");
+			
+			
 			for (MultipartFile filePart : fileList)
 			{
 				
