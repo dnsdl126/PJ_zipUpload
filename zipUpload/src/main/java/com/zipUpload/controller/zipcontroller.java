@@ -77,12 +77,12 @@ public class zipcontroller {
 			//  경로의 파일 에 하나씩 담김 
 			for (int i=0 ; i< files.size(); i++) {
 				log.info(files.get(i).getOriginalFilename() + "업로드");
-				//drk = new File(filePath + files.get(i).getOriginalFilename());
-				filename =  files.get(i).getName();
-				//files.get(i).transferTo(drk);
+				filename =  files.get(i).getOriginalFilename();
+				drk = new File(filePath + filename);
+				files.get(i).transferTo(drk);
 				
 				filearray[i] = filename;
-				//log.info("filearray : " + filearray[i]);
+				
 				
 			}
 			
