@@ -1,9 +1,18 @@
 package com.zipUpload.controller;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,31 +47,35 @@ public class zipcontroller {
 		@PostMapping("/zipcreate")
 		public String zipupload(MultipartHttpServletRequest request, MultipartFile file) throws Exception {
 			
-			String path = "C:/testzip/"; // 파일 경로
-			String fileName = ""; //업로드 파일 명
+			//파일 경로
+			String filePath = "C:\\Upload\\";
 			
-			File dir = new File(path);
+			String zipFile = "douwnload.zip";
 			
-			if(!dir.isDirectory()) {
-				
-				dir.mkdir();
+			//파일을 List로 보관
+			List<MultipartFile> files = request.getFiles("zipFile");
+			
+			//파일이 없는 경우 디렉토리 생성
+			File drk = new File(filePath);
+			
+			if(drk .exists() == false) {
+				drk.mkdirs();
 			}
 			
-			
-			// 코드 분석 다시 하기 
-			
-			Iterator<String> files = request.getFileNames();
-			file = request.getFile(files.next());
-			
-			List<MultipartFile> fileList = request.getFiles("zipFile");
-			
-			
-			for (MultipartFile filePart : fileList)
-			{
+			//  경로의 파일 에 하나씩 담김 
+			for (int i=0 ; i< files.size(); i++) {
+				log.info(files.get(i).getOriginalFilename() + "업로드");
+				drk = new File(filePath + files.get(i).getOriginalFilename());
+				files.get(i).transferTo(drk);
 				
-				fileName = filePart.getOriginalFilename();
-				log.info("fileName : " + fileName);
 			}
+			
+			// drk에 업로드한 파일 들을 배열로 담는다 
+			String[] entries = drk.list();
+			
+			
+			
+			
 			return null;
 		}
 			
