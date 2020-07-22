@@ -47,26 +47,21 @@ public class zipcontroller {
 		@PostMapping("/zipcreate")
 		public String zipupload(MultipartHttpServletRequest request, MultipartFile file) throws Exception {
 			
-			  //압축할 디렉토리 경로
-			  String filePath = "C:\\Upload\\";
-			  //압축할 파일명
-			  String zipFileName = "C:\\Upload\\downloadXlsx" + ".zip";
+			//파일 경로
+			String filePath = "C:\\Upload\\";
 			
-			
-		
-			
+			String zipFile = "douwnload.zip";
 			
 			//파일을 List로 보관
 			List<MultipartFile> files = request.getFiles("zipFile");
 			
+			//파일이 없는 경우 디렉토리 생성
 			File drk = new File(filePath);
 			
-			//파일이 없는 경우 디렉토리 생성
 			if(drk .exists() == false) {
 				drk.mkdirs();
 			}
 			
-		
 			//  경로의 파일 에 하나씩 담김 
 			for (int i=0 ; i< files.size(); i++) {
 				log.info(files.get(i).getOriginalFilename() + "업로드");
@@ -75,11 +70,9 @@ public class zipcontroller {
 				
 			}
 			
+			// drk에 업로드한 파일 들을 배열로 담는다 
 			String[] entries = drk.list();
 			
-			log.info("테스 " + entries[0]);
- 			
-		
 			
 			
 			
