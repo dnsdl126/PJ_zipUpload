@@ -36,13 +36,18 @@ function fileSubmit() {
 		       contentType: false,
 		       cache: false,
 		       data: formData,
-		       success: function(result){  
-		           alert("업로드 성공!!");
-		           location.reload(); /* 자동 새로고침 */
-		       } ,
-		       	error : function(error) {
+		       success: function(data){  
+		    	   
+		    	   if(data == "ok") {
+		    		   alert("업로드 성공!!");
+		    		   location.reload(); /* 자동 새로고침 */
+		    	   } else {
 		       		alert("업로드 실패!!");
-		       	}
+		    		   
+		    	   }
+		    			   
+		    	   
+		       } 
 		    });
 	
 	

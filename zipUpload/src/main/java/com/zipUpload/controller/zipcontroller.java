@@ -13,23 +13,31 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+
+import com.zipUpload.service.service;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
 public class zipcontroller {
+	
+	@Autowired
+	service zipService;
 	
 		//tree 구조 가장 마지막에 test code 짤 예정
 		@GetMapping("/zip")
@@ -48,21 +56,26 @@ public class zipcontroller {
 		}
 	
 		//파일 압축 컨트롤러 
+		@ResponseBody
 		@PostMapping("/zipcreate")
 		public String zipupload(MultipartHttpServletRequest request, MultipartFile file) throws Exception {
 			
+			//압축 결과
+			String ok = "false";
 			
 			
 			//파일 경로
 			String filePath = "C:\\Upload\\";
 			
-			//압축할 파일 
-			String filename;
+			String zipPath = "zip\\";
 			
-			//파일을 List로 보관
+			//압축할 파일 
+			String filename = null;
+			
+			//view에서 넘어온 첨부파일 
 			List<MultipartFile> files = request.getFiles("zipFile");
 			
-			//파일이 없는 경우 디렉토리 생성
+			//files를 담을 파일 파일이 없는 경우 디렉토리 생성
 			File drk = new File(filePath);
 			
 			if(drk.isDirectory()) {
@@ -72,66 +85,55 @@ public class zipcontroller {
 			
 			int t = files.size();
 			
-			String[] filearray = new String[t];
+			String[] filearray = new String[t]; // Upload에 있는 파일을 담을 list
 			
-			//  경로의 파일 에 하나씩 담김 
+			
+		
+				
 			for (int i=0 ; i< files.size(); i++) {
-				log.info(files.get(i).getOriginalFilename() + "업로드");
-				filename =  files.get(i).getOriginalFilename();
-				drk = new File(filePath + filename);
-				files.get(i).transferTo(drk);
 				
-				filearray[i] = filename;
+				//log.info(files.get(i).getOriginalFilename() + "업로드");
+				filename =  files.get(i).getOriginalFilename(); //filnam에 files의 파일들을 하나씩 담고 
+				drk = new File(filePath+filename); // 생성한 Upload 파일의 경로
+				files.get(i).transferTo(drk);// multipartfile 을 file로 변환하여 옮겨 담고 
 				
+				filearray[i] = filename; // 생성해둔 list에 담는다 
 				
 			}
 			
-			int size = 1024;
-			byte[] buf = new byte[size];
-			String outZip = filePath + "test.zip";
-			
-			FileInputStream fis = null;
-			ZipOutputStream zos = null;
-			BufferedInputStream bis = null;
-			
-			
-			try {
-				zos = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(outZip)));
 				
-				for(int i =0; i < filearray.length; i++) {
-					
-					fis = new FileInputStream(filePath + "/" + filearray[i]);
-					bis = new BufferedInputStream(fis, size);
-					
-					//zip에 넣을다음 entry를 가져온다
-					
-					zos.putNextEntry(new ZipEntry(filearray[i]));
-
-					//압출 레벨 설정
-					// 기본값은 8 최대 9
-					final int COM_LEVEL =8 ;
-					zos.setLevel(COM_LEVEL);
-					
-					//준비된 버퍼에서 입출력 스트림으로 wirte
-					int len;
-					while((len = bis.read(buf, 0, size))!= -1) {
-						zos.write(buf, 0, len);
-					}
-					
-					zos.closeEntry();
-					bis.close();
-					fis.close();
-
-				}
-				zos.close();
 				
-			} catch (Exception e) {
-				e.printStackTrace();
+			
+			
+			zipService.create(filePath, filename, filearray, ok);
+			
+			
+			// zip 생성후 복사한 파일 삭제 처리 
+		
+			File FileList = new File(filePath);
+			
+			File[] fileDelte = FileList.listFiles(); 
+			
+			
+			
+			
+			for(int i= 0; i<FileList.length()-1; i++) {
+				String FileNmae =  fileList[i];
+				log.info("FileNmae : "+FileNmae);
+				
+				
+				File deleteFile = new File(filePath+FileNmae);
+				//deleteFile.delete();
+				
 			}
-
 			
 			
-			return null;
+			
+			return ok;
+			
+			
+			
+			
 			
 			
 		}
