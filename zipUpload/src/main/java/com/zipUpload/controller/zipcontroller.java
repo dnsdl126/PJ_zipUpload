@@ -40,14 +40,36 @@ public class zipcontroller {
 	service zipService;
 	
 		//tree 구조 가장 마지막에 test code 짤 예정
-		@GetMapping("/zip")
+		@GetMapping("/zipOpen")
 		public String ziplist(Model model) {
 			
-			return "zipupload/zip";
+			return "zipupload/zipOpen";
+		}
+		
+		//압축해제 진행 
+		@PostMapping("/zipOpen")
+		public String zipopen(MultipartFile file , MultipartHttpServletRequest request) throws IllegalStateException, IOException {
+			
+			String openPath = "C:\\Upload\\open";
+			
+			file = request.getFile("Open");
+			
+			
+			
+			log.info("컨트롤러 도착 ");
+	
+			File newFile = new File(openPath + file.getOriginalFilename());
+			  
+			 file.transferTo(newFile);
+		
+			
+			log.info("이름이 뭘까요 :" + file.getOriginalFilename());
+			
+			
+			return null;
 		}
 	
-	
-	
+		
 		//압축해제 view 단
 		@GetMapping("/zipcreate")
 		public String zipcreate(Model model) {

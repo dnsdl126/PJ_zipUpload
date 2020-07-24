@@ -8,14 +8,14 @@
 <title>Insert title here</title>
 </head>
 <body>
-<div class="col-lg-10 well" style="width: 500px; margin: auto;">
-			<div class="row">
-			<form id="UploadForm" name="UploadForm" enctype="multipart/form-data" method="post"  >
-				<input id="zipFile" type="file" name="zipFile" multiple="multiple"  /></input>
-				<input type="button" value="upload" onclick="fileSubmit();">
-			</form>
-			</div>
+	<div class="col-lg-10 well" style="width: 500px; margin: auto;">
+		<div class="row">
+		<form id="UploadForm" name="UploadForm" enctype="multipart/form-data" method="post"  >
+			<input id="zipFile" type="file" name="zipFile" multiple="multiple"  /></input>
+			<input type="button" value="upload" onclick="fileSubmit();">
+		</form>
 		</div>
+	</div>
 
 </body>
 <script src="http://malsup.github.com/jquery.form.js"></script>
@@ -51,11 +51,6 @@ function fileSubmit() {
 		       } 
 		    });
 	
-	
-	
-	
-	
-   
 	
 }
 

@@ -21,6 +21,16 @@
 
 </style>
 <body>
+	<div class="col-lg-10 well" style="width: 500px; margin: auto;">
+		<div class="row">
+		<form id="UploadForm" name="UploadForm" enctype="multipart/form-data" method="post"  >
+			<input id="zipopen" type="file" name="Open" /></input>
+			<input type="button" value="upload" onclick="zipOpen();"/>
+		</form>
+		</div>
+	</div>
+
+
 	 <fieldset>
         <legend>트리뷰 구현하기</legend>
         <ul>
@@ -51,7 +61,38 @@
 </body>
 <script src="http://malsup.github.com/jquery.form.js"></script>
 <script type="text/javascript">
-$(document).ready(function () {
+function zipOpen() {
+	   
+	var form =$('#UploadForm')[0];
+	
+	var formData = new FormData(form);
+	
+		  $.ajax({
+		       enctype:"multipart/form-data",
+		       method:"POST",
+		       url: '${path}/zipOpen',
+		       processData: false,   
+		       contentType: false,
+		       cache: false,
+		       data: formData,
+		       success: function(data){  
+		    	   alert(data);
+		    	   
+		    	   if(data == "ok") {
+		    		   alert("업로드 성공!!");
+		    		   location.reload(); /* 자동 새로고침 */
+		    	   } else {
+		       		alert("업로드 실패!!");
+		    		   
+		    	   }
+		    			   
+		    	   
+		       } 
+		    });
+	
+	
+}
+/* $(document).ready(function () {
     //[1] 리스트의 기본 모양 지정 : <ul>를 자식으로 가지지 않는 li의 블릿기호는 기본 모양
     $('li:not(:has(ul))').css({ cursor: 'default', 'list-style-image':'none'});
    
@@ -78,6 +119,12 @@ $(document).ready(function () {
         }
         return false;          
     });
-});
-</script>	
+}); */
+
+
+
+</script>
+
+
+	
 </html>
