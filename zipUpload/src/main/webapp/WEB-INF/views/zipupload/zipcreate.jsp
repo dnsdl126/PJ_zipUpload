@@ -37,6 +37,7 @@ function fileSubmit() {
 		       cache: false,
 		       data: formData,
 		       success: function(data){  
+		    	   alert(data);
 		    	   
 		    	   if(data == "ok") {
 		    		   alert("업로드 성공!!");

@@ -60,14 +60,12 @@ public class zipcontroller {
 		@PostMapping("/zipcreate")
 		public String zipupload(MultipartHttpServletRequest request, MultipartFile file) throws Exception {
 			
-			//압축 결과
-			String ok = "false";
-			
+		
+			//String 
 			
 			//파일 경로
 			String filePath = "C:\\Upload\\";
 			
-			String zipPath = "zip\\";
 			
 			//압축할 파일 
 			String filename = null;
@@ -102,43 +100,13 @@ public class zipcontroller {
 			}
 			
 				
-				
+			String zipok = zipService.create(filePath, filearray);
 			
+			//log.info(zipok);
 			
-			zipService.create(filePath, filename, filearray, ok);
-			
-			
-			// zip 생성후 복사한 파일 삭제 처리 
-		
-			File FileList = new File(filePath);
-			
-			File[] fileDelte = FileList.listFiles(); 
-			
-			
-			
-			
-			for(int i= 0; i<FileList.length()-1; i++) {
-				String FileNmae =  fileList[i];
-				log.info("FileNmae : "+FileNmae);
-				
-				
-				File deleteFile = new File(filePath+FileNmae);
-				//deleteFile.delete();
-				
-			}
-			
-			
-			
-			return ok;
-			
-			
-			
-			
-			
-			
+			return zipok;
 		}
 			
-		
 
 		
 	}
